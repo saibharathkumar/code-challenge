@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+companies = Company.all
+companies.each do |company|
+	next if company.zip_code.blank?
+	city_state_data = ZipCodes.identify(company.zip_code)
+  if city_state_data.present?
+    company.city = city_state_data[:city]
+    company.state = city_state_data[:state_code]
+    company.save
+  end
+end
