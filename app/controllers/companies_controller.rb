@@ -17,6 +17,7 @@ class CompaniesController < ApplicationController
     if @company.save
       redirect_to companies_path, notice: "Saved"
     else
+      flash_error_message
       render :new
     end
   end
@@ -26,11 +27,21 @@ class CompaniesController < ApplicationController
 
   def update
     if @company.update(company_params)
-      redirect_to companies_path, notice: "Changes Saved"
+      redirect_to companies_path, notice: "Changes saved successfully."
     else
+      flash_error_message
       render :edit
     end
   end  
+
+  def destroy
+    if @company.destroy
+      redirect_to companies_path, notice: "Company has been deleted successfully."
+    else
+      flash_error_message
+      render :show
+    end
+  end
 
   private
 
@@ -48,6 +59,12 @@ class CompaniesController < ApplicationController
 
   def set_company
     @company = Company.find(params[:id])
+    rescue ActiveRecord::RecordNotFound => error
+    redirect_to companies_path, notice: "#{error}"
+  end
+
+  def flash_error_message
+    flash.now[:error] = @company.errors.full_messages[0]  if @company && @company.errors
   end
   
 end

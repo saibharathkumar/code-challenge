@@ -33,7 +33,7 @@ class CompaniesControllerTest < ApplicationSystemTestCase
       click_button "Update Company"
     end
 
-    assert_text "Changes Saved"
+    assert_text "Changes saved successfully."
 
     @company.reload
     assert_equal "Updated Test Company", @company.name
@@ -57,5 +57,20 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_equal "New Test Company", last_company.name
     assert_equal "28173", last_company.zip_code
   end
+
+  test "Destroy" do
+    visit company_path(@company)
+    click_link 'Delete'
+    alert = page.driver.browser.switch_to.alert
+    assert_equal alert.text, I18n.t('deletion_confirmation')
+    alert.dismiss
+    assert_text @company.name
+
+    click_link 'Delete'
+    alert = page.driver.browser.switch_to.alert
+    assert_equal alert.text, I18n.t('deletion_confirmation')
+    alert.accept
+    assert_text "Company has been deleted successfully."
+  end 
 
 end

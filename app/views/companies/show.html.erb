@@ -6,6 +6,7 @@
     </div>
     <div class="col text-right">
       <%= link_to "Edit", edit_company_path %>
+      <%= link_to 'Delete', company_path(@company), class: 'text-danger', method: :delete, data: { confirm: t('deletion_confirmation') } %>
     </div>
   </div>
   <div class="bg-success">

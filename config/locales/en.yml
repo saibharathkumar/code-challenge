@@ -31,3 +31,4 @@
 
 en:
   hello: "Hello world"
+  deletion_confirmation: "Are you sure you want to delete this company?"
